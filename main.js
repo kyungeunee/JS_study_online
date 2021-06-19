@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 // JS 데이터
 //  1. String
 //1) String.prototype.indexOf()
@@ -422,6 +424,8 @@ console.log(aObj, bObj, cObj, aObj === cObj) // { k: 9 } { k: 9 } { k: 9 } true
 
 
 // 8. 얕은 복사(Shallow copy), 깊은 복사(Deep copy)
+// 객체 데이터 안에 내용이 간단하면 얕은 복사로도 충분히 사용가능하지만, 
+// 아래 예시처럼 객체안에 배열 데이터처럼 데이터 구조가 복잡할 시 깊은 복사를 사용하는걸 고려해야 한다.
 // 메모리_복사 예제
 //--------------------------------------
 //|ㄱ:    |ㄴ:   |ㄷ:     |ㄹ: 
@@ -456,5 +460,29 @@ console.log('------')
 
 user8.emails.push('gim0627@gmail.com')
 console.log(user8.emails === copyUser2.emails) //true
-console.log('user', user8) //user {name: "Tina", age: 42, emails: Array(1)}
-console.log('copyUser2', copyUser2) //copyUser2 {name: "Tina", age: 27, emails: Array(1)}
+console.log('user', user8) //user {name: "Tina", age: 42, emails: Array(2)}
+console.log('copyUser2', copyUser2) //copyUser2 {name: "Tina", age: 27, emails: Array(2)}
+
+//깊은 복사 : Js로 구현하기 조금 어려워서 lodash 설치해줄것.
+//npm i lodash 설치 후 main.js에 import _ from 'lodash' 넣어준다.
+// lodash 대신 _ 써도 되는 것
+const userA= {
+  name: 'Tina',
+  age: 22,
+  emails: ['gim530@naver.com'] 
+}
+
+//clone deep 사용 : clone method와 유사하나, 값을 재귀적으로 복사하는 개념
+//This method is like -.clone except that it recursively clones value
+//재귀 : 반복 실행
+const copyUserA = _.cloneDeep(userA)
+console.log(copyUserA === userA) //false
+
+userA.age = 50
+console.log('userA', userA) //userA {name: "Tina", age: 50, emails: Array(1)}
+console.log('copyUserA', copyUserA) //copyUserA {name: "Tina", age: 22, emails: Array(1)}
+
+userA.emails.push('gim0627@gmail.com')
+console.log(userA.emails === copyUserA.emails) //false
+console.log('userA', userA) //userA {name: "Tina", age: 50, emails: Array(2)}
+console.log('copyUserA', copyUserA) //copyUserA {name: "Tina", age: 22, emails: Array(1)}
